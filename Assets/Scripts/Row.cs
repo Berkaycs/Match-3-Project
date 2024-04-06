@@ -2,5 +2,5 @@ using UnityEngine;
 
 public sealed class Row : MonoBehaviour
 {
-    public Tile[] Tiles;
+    public Tile[] Tiles1;
 }
