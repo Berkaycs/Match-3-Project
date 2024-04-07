@@ -3,10 +3,20 @@ using UnityEngine.UI;
 
 public sealed class Tile : MonoBehaviour
 {
-    public int X;
-    public int Y;
+    public int x;
+    public int y;
 
-    public Item Item;
+    private Item _item;
+    public Item Item
+    {
+        get { return _item; }
+        set 
+        { 
+            if(_item == value) return;
+            _item = value;
+            Icon.sprite = _item.Sprite;
+        }
+    }
     public Image Icon;
     public Button Button;
 }
