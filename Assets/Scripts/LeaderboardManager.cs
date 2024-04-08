@@ -37,7 +37,6 @@ public class LeaderboardManager : MonoBehaviour
             {
                 string json = request.downloadHandler.text;
                 Debug.Log(json);
-                //List<LeaderboardEntry> leaderboardData = JsonUtility.FromJson<List<LeaderboardEntry>>(json);
                 LeaderboardList leaderboardData = JsonUtility.FromJson<LeaderboardList>("{\"entries\":" + json + "}");
 
                 // Clear existing entries
