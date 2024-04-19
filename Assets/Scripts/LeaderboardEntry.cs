@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class LeaderboardEntry
+public class UserData
 {
     public string UserName;
     public int Score;
+    public int Level;
 }
 
 [System.Serializable]
-public class LeaderboardList
+public class UserDataList
 {
-    public LeaderboardEntry[] entries;
+    public UserData[] entries;
 }
