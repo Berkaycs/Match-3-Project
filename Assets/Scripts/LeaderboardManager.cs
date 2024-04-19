@@ -36,8 +36,8 @@ public class LeaderboardManager : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 string json = request.downloadHandler.text;
-                Debug.Log(json);
-                LeaderboardList leaderboardData = JsonUtility.FromJson<LeaderboardList>("{\"entries\":" + json + "}");
+                //Debug.Log(json);
+                UserDataList leaderboardData = JsonUtility.FromJson<UserDataList>("{\"entries\":" + json + "}");
 
                 // Clear existing entries
                 foreach (Transform child in PlayerInfoContainer)
@@ -47,7 +47,7 @@ public class LeaderboardManager : MonoBehaviour
 
                 // Populate leaderboard with fetched data
                 int rank = 1;
-                foreach (LeaderboardEntry entry in leaderboardData.entries)
+                foreach (UserData entry in leaderboardData.entries)
                 {
                     GameObject temp = Instantiate(PlayerInfoTemplate);
                     temp.transform.SetParent(PlayerInfoContainer.transform);

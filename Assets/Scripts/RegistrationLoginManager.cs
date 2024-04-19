@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class RegistrationLoginManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class RegistrationLoginManager : MonoBehaviour
 
     public GameObject RegPanel;
     public GameObject LogPanel;
+
+    public string loggedInUsername;
 
     private void Awake()
     {
@@ -88,6 +91,8 @@ public class RegistrationLoginManager : MonoBehaviour
 
     IEnumerator Login()
     {
+        DontDestroyOnLoad(gameObject);
+
         string userName = UnityWebRequest.EscapeURL(logUserInput.text);
         string password = UnityWebRequest.EscapeURL(logPasswordInput.text);
 
@@ -104,7 +109,8 @@ public class RegistrationLoginManager : MonoBehaviour
                 
                 if (response == "TRUE")
                 {
-                    Debug.Log("Login successful");
+                    loggedInUsername = userName;
+                    SceneManager.LoadScene(1);
                     logErrorText.gameObject.SetActive(false);
                 }
 
