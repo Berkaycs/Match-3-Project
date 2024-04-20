@@ -19,4 +19,9 @@ public sealed class Tile : MonoBehaviour
     }
     public Image Icon;
     public Button Button;
+
+    private void Start()
+    {
+        Button.onClick.AddListener(call: () => Board.Instance.Select(this));
+    }
 }
