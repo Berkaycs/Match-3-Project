@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using System;
+using System.Diagnostics;
 
 public class Board : MonoBehaviour
 {
@@ -82,7 +83,7 @@ public class Board : MonoBehaviour
         {
             return;
         }
-        Debug.Log($"Selected tiles at ({_selection[0].x}),({_selection[0].y}) and ({ _selection[1].x}),({ _selection[1].y})");
+        //Debug.Log($"Selected tiles at ({_selection[0].x}),({_selection[0].y}) and ({ _selection[1].x}),({ _selection[1].y})");
         await Swap(_selection[0], _selection[1]);
         if ((_selection[0].x == _selection[1].x-1 && _selection[0].y == _selection[1].y) || (_selection[0].x == _selection[1].x + 1 && _selection[0].y == _selection[1].y) || (_selection[0].y == _selection[1].y + 1 && _selection[0].x == _selection[1].x) || (_selection[0].y == _selection[1].y - 1 && _selection[0].x == _selection[1].x))
         {
@@ -236,6 +237,9 @@ public class Board : MonoBehaviour
                 }
 
                 ValueOfItem = tile.Item.Value;
+                IndexOfItem = tile.Item.Index;               
+                PoppedCount = connectedTiles.Count;
+
                 var deflateSequence = DOTween.Sequence();
 
                 foreach (var connectedTile in connectedTiles)
