@@ -10,6 +10,14 @@ public class Board : MonoBehaviour
 {
     public static Board Instance { get; private set; }
 
+    
+    public event EventHandler OnGoalFruitPopped;
+    public event EventHandler OnTileSwappedMove;
+    public event EventHandler<OnTileSwappedScoreEventArgs> OnTileSwappedScore;
+    public class OnTileSwappedScoreEventArgs : EventArgs
+    {
+        public int Multiplier;
+    }
 
     public Row[] Rows;
 
@@ -29,6 +37,9 @@ public class Board : MonoBehaviour
     private readonly List<Tile> _selection = new List<Tile>();
 
     private const float TweenDuration = 0.25f;
+    public int ValueOfItem;
+    public int IndexOfItem;
+    public int PoppedCount;
     private void Awake()
     {
         Instance = this;
@@ -36,6 +47,10 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        OnTileSwappedMove += GameManager.Instance.GameManager_OnTileSwappedMove;
+        OnTileSwappedScore += GameManager.Instance.GameManager_OnTileSwappedScore;
+        OnGoalFruitPopped += GameManager.Instance.GameManager_OnGoalFruitPopped;
+
         //linQ ile pratik yoldan yazým.
         Tiles = new Tile[Rows.Max(selector: r=> r.Tiles1.Length),Rows.Length];
 
@@ -55,7 +70,6 @@ public class Board : MonoBehaviour
         Popy();
     }
 
-   
     public async void Select(Tile tile)
     {
         var control = 0;
@@ -72,6 +86,7 @@ public class Board : MonoBehaviour
         await Swap(_selection[0], _selection[1]);
         if ((_selection[0].x == _selection[1].x-1 && _selection[0].y == _selection[1].y) || (_selection[0].x == _selection[1].x + 1 && _selection[0].y == _selection[1].y) || (_selection[0].y == _selection[1].y + 1 && _selection[0].x == _selection[1].x) || (_selection[0].y == _selection[1].y - 1 && _selection[0].x == _selection[1].x))
         {
+            
             if (CanPopx())
             {
                 Popx();
@@ -85,6 +100,10 @@ public class Board : MonoBehaviour
             if (control == 0)
             {
                 await Swap(_selection[0], _selection[1]);
+            }
+            if (control == 1)
+            {
+                OnTileSwappedMove?.Invoke(this, EventArgs.Empty);
             }
 
             _selection.Clear();
@@ -150,6 +169,7 @@ public class Board : MonoBehaviour
     }
     private async void Popx()
     {
+        
         for (var y=0; y < Height; y++)
         {
             for (var x=0; x < Width; x++)
@@ -160,6 +180,12 @@ public class Board : MonoBehaviour
                 { 
                     continue;
                 }
+
+                ValueOfItem = tile.Item.Value;
+                IndexOfItem = tile.Item.Index;
+                PoppedCount = connectedTiles.Count;
+
+
                 var deflateSequence = DOTween.Sequence();
 
                 foreach (var connectedTile in connectedTiles)
@@ -167,6 +193,13 @@ public class Board : MonoBehaviour
                     deflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.zero,TweenDuration));
                 }
                 await deflateSequence.Play().AsyncWaitForCompletion();
+
+                OnGoalFruitPopped?.Invoke(this, EventArgs.Empty);
+
+                OnTileSwappedScore?.Invoke(this, new OnTileSwappedScoreEventArgs
+                {
+                    Multiplier = connectedTiles.Count
+                });
 
                 var inflateSequence = DOTween.Sequence();
 
@@ -176,6 +209,7 @@ public class Board : MonoBehaviour
                     inflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.one,TweenDuration));
                 }
                 await inflateSequence.Play().AsyncWaitForCompletion();
+
                 if (CanPopx())
                 {
                     Popx();
@@ -189,6 +223,7 @@ public class Board : MonoBehaviour
     }
     private async void Popy()
     {
+        
         for (var y = 0; y < Height; y++)
         {
             for (var x = 0; x < Width; x++)
@@ -199,6 +234,8 @@ public class Board : MonoBehaviour
                 {
                     continue;
                 }
+
+                ValueOfItem = tile.Item.Value;
                 var deflateSequence = DOTween.Sequence();
 
                 foreach (var connectedTile in connectedTiles)
@@ -206,6 +243,14 @@ public class Board : MonoBehaviour
                     deflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.zero, TweenDuration));
                 }
                 await deflateSequence.Play().AsyncWaitForCompletion();
+
+                OnGoalFruitPopped?.Invoke(this,EventArgs.Empty);
+
+                OnTileSwappedScore?.Invoke(this, new OnTileSwappedScoreEventArgs
+                {
+                    Multiplier = connectedTiles.Count
+                });
+
 
                 var inflateSequence = DOTween.Sequence();
 

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a19ab0f1605faa4ebe84c85441b25a3, type: 3}
   m_Name: Pear
   m_EditorClassIdentifier: 
-  Value: 6
+  Value: 5
+  Index: 5
   Sprite: {fileID: 21300000, guid: 50dd2e8acaa7426438d693e39eb73026, type: 3}
