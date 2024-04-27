@@ -24,7 +24,16 @@ public class GameMenu : MonoBehaviour
 
     public void UnlockedLevel()
     {
-        StartCoroutine(UpdateLevel());
+        if (nextLevel <= lockedLevel)
+        {
+            LevelName = "Level " + nextLevel;
+        }
+        else
+        {
+            LevelName = "Level " + lockedLevel;
+        }
+
+        SceneManager.LoadScene(LevelName);
     }
 
     public void Retry()
@@ -34,7 +43,7 @@ public class GameMenu : MonoBehaviour
         SceneManager.LoadScene(LevelName);
     }
 
-    IEnumerator UpdateLevel()
+    public IEnumerator UpdateLevel()
     {
         // Escape the username to ensure it's URL-safe
         string username = UnityWebRequest.EscapeURL(login.loggedInUsername);
@@ -61,19 +70,33 @@ public class GameMenu : MonoBehaviour
 
                 nextLevel = CurrentLevel + 1;
 
-                if (nextLevel <= lockedLevel)
-                {
-                    LevelName = "Level " + nextLevel;                   
-                }
-                else
-                {
-                    LevelName = "Level " + lockedLevel;                   
-                }
-
-                SceneManager.LoadScene(LevelName);
-
                 // Use the new level as needed in your game logic
                 Debug.Log("Locked level: " + lockedLevel);
+            }
+            else
+            {
+                Debug.LogError("Failed to update level: " + request.error);
+            }
+        }
+    }
+
+    public IEnumerator UpdateScore()
+    {
+        // Escape the username to ensure it's URL-safe
+        string username = UnityWebRequest.EscapeURL(login.loggedInUsername);
+        int score = GameManager.Instance.Score;
+
+        // Construct the URL with the username as a parameter
+        string url = "http://127.0.0.1/match3/updatescore.php?user_name=" + username + "&user_score=" + score;
+
+        // Send the GET request to the PHP script
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Score updated successfully!");
             }
             else
             {

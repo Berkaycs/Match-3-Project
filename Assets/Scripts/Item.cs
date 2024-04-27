@@ -5,6 +5,7 @@ public sealed class Item : ScriptableObject
 {
     //hangi icon kaç puan kazandýrýr.
     public int Value;
+    public int Index;
 
     public Sprite Sprite;
 }
