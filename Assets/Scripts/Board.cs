@@ -195,12 +195,12 @@ public class Board : MonoBehaviour
                 }
                 await deflateSequence.Play().AsyncWaitForCompletion();
 
-                OnGoalFruitPopped?.Invoke(this, EventArgs.Empty);
-
                 OnTileSwappedScore?.Invoke(this, new OnTileSwappedScoreEventArgs
                 {
                     Multiplier = connectedTiles.Count
                 });
+
+                OnGoalFruitPopped?.Invoke(this, EventArgs.Empty);
 
                 var inflateSequence = DOTween.Sequence();
 
@@ -219,6 +219,8 @@ public class Board : MonoBehaviour
                 {
                     Popy();
                 }
+
+                GameManager.Instance.CheckGoalAmount();
             }
         }
     }
@@ -248,13 +250,12 @@ public class Board : MonoBehaviour
                 }
                 await deflateSequence.Play().AsyncWaitForCompletion();
 
-                OnGoalFruitPopped?.Invoke(this,EventArgs.Empty);
-
                 OnTileSwappedScore?.Invoke(this, new OnTileSwappedScoreEventArgs
                 {
                     Multiplier = connectedTiles.Count
                 });
 
+                OnGoalFruitPopped?.Invoke(this, EventArgs.Empty);
 
                 var inflateSequence = DOTween.Sequence();
 
@@ -272,6 +273,8 @@ public class Board : MonoBehaviour
                 {
                     Popy();
                 }
+
+                GameManager.Instance.CheckGoalAmount();
             }
         }
     }

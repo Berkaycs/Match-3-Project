@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
         _scoreText.text = Score.ToString();
 
-        _goalAmount = UnityEngine.Random.Range(10, 20);
+        _goalAmount = UnityEngine.Random.Range(5, 10);
         _goalText.text = ": " + _goalAmount.ToString();
 
         _itemIndex = UnityEngine.Random.Range(0, _itemList.Length);
@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
     {
         _itemList[_itemIndex].Value = 15;
         Score += Board.Instance.ValueOfItem * e.Multiplier;
+
+        Debug.Log(Score);
 
         _scoreText.text = 0.ToString();
         _scoreText.text = Score.ToString();
@@ -104,14 +106,19 @@ public class GameManager : MonoBehaviour
     {
         if (_itemIndex == Board.Instance.IndexOfItem)
         {
-            _goalAmount -= Board.Instance.PoppedCount;
-            if(_goalAmount <= 0)
-            {
-                _goalAmount = 0;
-                OnLevelCompleted?.Invoke(this, EventArgs.Empty);
-            }
+            _goalAmount -= Board.Instance.PoppedCount;           
             _goalText.text = ": " + _goalAmount.ToString();
         }
         
+    }
+
+    public void CheckGoalAmount()
+    {
+        if (_goalAmount <= 0)
+        {
+            _goalAmount = 0;
+            OnLevelCompleted?.Invoke(this, EventArgs.Empty);
+            //Score = 0;
+        }
     }
 }
