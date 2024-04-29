@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
 
     private int _moveCount;
     private int _goalAmount;
+    private int _goalAmountMax;
     private int _itemIndex;
     public int Score;
 
@@ -51,7 +52,8 @@ public class GameManager : MonoBehaviour
 
         _scoreText.text = Score.ToString();
 
-        _goalAmount = UnityEngine.Random.Range(10, 20);
+        _goalAmountMax = UnityEngine.Random.Range(8, 15);
+        _goalAmount = _goalAmountMax;
         _goalText.text = ": " + _goalAmount.ToString();
 
         _itemIndex = UnityEngine.Random.Range(0, _itemList.Length);
@@ -105,11 +107,7 @@ public class GameManager : MonoBehaviour
         if (_itemIndex == Board.Instance.IndexOfItem)
         {
             _goalAmount -= Board.Instance.PoppedCount;
-            if(_goalAmount <= 0)
-            {
-                _goalAmount = 0;
-                OnLevelCompleted?.Invoke(this, EventArgs.Empty);
-            }
+            _goalAmount = Mathf.Clamp(_goalAmount, 0, _goalAmountMax);
             _goalText.text = ": " + _goalAmount.ToString();
         }
         
