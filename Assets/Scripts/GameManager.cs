@@ -108,6 +108,12 @@ public class GameManager : MonoBehaviour
         {
             _goalAmount -= Board.Instance.PoppedCount;           
             _goalText.text = ": " + _goalAmount.ToString();
+
+            if (_goalAmount <= 0)
+            {
+                _goalAmount = 0;
+                OnLevelCompleted?.Invoke(this, EventArgs.Empty);
+            }
         }
         
     }
