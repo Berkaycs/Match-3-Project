@@ -11,7 +11,9 @@ public class Board : MonoBehaviour
 {
     public static Board Instance { get; private set; }
 
-    
+    private ObjectPool pool = null;
+    private ParticleSystem obj;
+
     public event EventHandler OnGoalFruitPopped;
     public event EventHandler OnTileSwappedMove;
     public event EventHandler<OnTileSwappedScoreEventArgs> OnTileSwappedScore;
@@ -41,6 +43,7 @@ public class Board : MonoBehaviour
     public int ValueOfItem;
     public int IndexOfItem;
     public int PoppedCount;
+    public int controlSound = 0;
     private void Awake()
     {
         Instance = this;
@@ -48,6 +51,8 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        pool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
+
         OnTileSwappedMove += GameManager.Instance.GameManager_OnTileSwappedMove;
         OnTileSwappedScore += GameManager.Instance.GameManager_OnTileSwappedScore;
         OnGoalFruitPopped += GameManager.Instance.GameManager_OnGoalFruitPopped;
@@ -73,6 +78,7 @@ public class Board : MonoBehaviour
 
     public async void Select(Tile tile)
     {
+        AudioManager.instance.PlaySelectSound();
         var control = 0;
         
         if (!_selection.Contains(tile))
@@ -85,6 +91,8 @@ public class Board : MonoBehaviour
         }
         //Debug.Log($"Selected tiles at ({_selection[0].x}),({_selection[0].y}) and ({ _selection[1].x}),({ _selection[1].y})");
         await Swap(_selection[0], _selection[1]);
+
+
         if ((_selection[0].x == _selection[1].x-1 && _selection[0].y == _selection[1].y) || (_selection[0].x == _selection[1].x + 1 && _selection[0].y == _selection[1].y) || (_selection[0].y == _selection[1].y + 1 && _selection[0].x == _selection[1].x) || (_selection[0].y == _selection[1].y - 1 && _selection[0].x == _selection[1].x))
         {
             
@@ -101,6 +109,7 @@ public class Board : MonoBehaviour
             if (control == 0)
             {
                 await Swap(_selection[0], _selection[1]);
+                AudioManager.instance.PlayNotallowedSound();
             }
             if (control == 1)
             {
@@ -113,6 +122,7 @@ public class Board : MonoBehaviour
         else
         {
             await Swap(_selection[0], _selection[1]);
+            AudioManager.instance.PlayNotallowedSound();
             _selection.Clear();
         }
         
@@ -144,6 +154,8 @@ public class Board : MonoBehaviour
         tile1.Item = tile2.Item;
         tile2.Item = tile1Item;
 
+        AudioManager.instance.PlaySwapSound();
+
     }
 
     private bool CanPopx()
@@ -170,7 +182,7 @@ public class Board : MonoBehaviour
     }
     private async void Popx()
     {
-        
+      
         for (var y=0; y < Height; y++)
         {
             for (var x=0; x < Width; x++)
@@ -192,8 +204,25 @@ public class Board : MonoBehaviour
                 foreach (var connectedTile in connectedTiles)
                 { 
                     deflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.zero,TweenDuration));
+                    if (connectedTile.Item.Index != GameManager.Instance.ItemIndex)
+                    {
+                        Effect(connectedTile, 0);
+                    }
+                    else
+                    {
+                        Effect(connectedTile, 1);
+                    }
                 }
                 await deflateSequence.Play().AsyncWaitForCompletion();
+
+                if (controlSound == 0)
+                {
+                    AudioManager.instance.PlayPopSound();
+                }
+                else
+                {
+                    AudioManager.instance.PlayRepopSound();
+                }
 
                 OnTileSwappedScore?.Invoke(this, new OnTileSwappedScoreEventArgs
                 {
@@ -213,14 +242,19 @@ public class Board : MonoBehaviour
 
                 if (CanPopx())
                 {
+                    controlSound++;
                     Popx();
+                    return;
+
                 }
                 if (CanPopy())
                 {
+                    controlSound++;
                     Popy();
+                    return;
                 }
-
                 GameManager.Instance.CheckGoalAmount();
+                controlSound = 0;
             }
         }
     }
@@ -247,8 +281,26 @@ public class Board : MonoBehaviour
                 foreach (var connectedTile in connectedTiles)
                 {
                     deflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.zero, TweenDuration));
+                    if(connectedTile.Item.Index != GameManager.Instance.ItemIndex)
+                    {
+                        Effect(connectedTile, 0);
+                    }
+                    else
+                    {
+                        Effect(connectedTile, 1);
+                    }
+                    
                 }
                 await deflateSequence.Play().AsyncWaitForCompletion();
+
+                if (controlSound == 0)
+                {
+                    AudioManager.instance.PlayPopSound();
+                }
+                else
+                {
+                    AudioManager.instance.PlayRepopSound();
+                }
 
                 OnTileSwappedScore?.Invoke(this, new OnTileSwappedScoreEventArgs
                 {
@@ -267,15 +319,26 @@ public class Board : MonoBehaviour
                 await inflateSequence.Play().AsyncWaitForCompletion();
                 if (CanPopx())
                 {
+                    controlSound++;
                     Popx();
+                    return;
                 }
                 if (CanPopy())
                 {
+                    controlSound++;
                     Popy();
+                    return;
                 }
-
                 GameManager.Instance.CheckGoalAmount();
+                controlSound = 0;
             }
         }
+    }
+    void Effect(Tile tile,int number)
+    {
+        obj = pool.GetObject(number);
+        obj.gameObject.transform.position = tile.Icon.transform.position;
+        obj.Play();
+       
     }
 }
