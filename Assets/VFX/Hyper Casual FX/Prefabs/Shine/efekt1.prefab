@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 245581523800709619}
   - component: {fileID: 245581523800709618}
   m_Layer: 0
-  m_Name: Shine_blue
+  m_Name: efekt1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
