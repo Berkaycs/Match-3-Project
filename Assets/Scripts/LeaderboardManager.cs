@@ -27,7 +27,7 @@ public class LeaderboardManager : MonoBehaviour
     IEnumerator GetLeaderboard()
     {
         // Create URL with user credentials
-        string leaderboardURL = "http://127.0.0.1/match3/leaderboard.php";
+        string leaderboardURL = "https://match3backend.000webhostapp.com/leaderboard.php";
 
         using (UnityWebRequest request = UnityWebRequest.Get(leaderboardURL))
         {

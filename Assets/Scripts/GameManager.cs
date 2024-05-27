@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviour
 
         _scoreText.text = 0.ToString();
         _scoreText.text = Score.ToString();
-        //DOTween.To(() => _scoreText.text, x => _scoreText.text = x, Score.ToString(), 0.5f);
     }
 
     public void GameManager_OnLevelCompleted(object sender, EventArgs e)
