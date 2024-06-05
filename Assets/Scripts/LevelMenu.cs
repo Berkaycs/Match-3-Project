@@ -35,7 +35,7 @@ public class LevelMenu : MonoBehaviour
     {
         string username = UnityWebRequest.EscapeURL(login.loggedInUsername);
         Debug.Log(username);
-        string url = "https://match3backend.000webhostapp.com/userlevel.php?user_name=" + username;
+        string url = "http://127.0.0.1/match3/userlevel.php?user_name=" + username;
         Debug.Log(url);
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))

@@ -60,12 +60,15 @@ public class RegistrationLoginManager : MonoBehaviour
         string userName = UnityWebRequest.EscapeURL(regUserInput.text);
         string password = UnityWebRequest.EscapeURL(regPasswordInput.text);
 
+        
         // Create form data for registration
         WWWForm form = new WWWForm();
         form.AddField("user_name", userName);
         form.AddField("user_password", password);
 
-        using (UnityWebRequest request = UnityWebRequest.Post("https://match3backend.000webhostapp.com/register.php", form))
+        // "{\"user_name\":\"" + userName + "\", \"user_password\":\"" + password + "\"}"
+
+        using (UnityWebRequest request = UnityWebRequest.Post("http://127.0.0.1/match3/register.php", form))
         {
             yield return request.SendWebRequest();
 
@@ -103,7 +106,7 @@ public class RegistrationLoginManager : MonoBehaviour
         string password = UnityWebRequest.EscapeURL(logPasswordInput.text);
 
         // Create URL with user credentials
-        string loginURL = "https://match3backend.000webhostapp.com/login.php?user_name=" + userName + "&user_password=" + password;
+        string loginURL = "http://127.0.0.1/match3/login.php?user_name=" + userName + "&user_password=" + password;
 
         using (UnityWebRequest request = UnityWebRequest.Get(loginURL))
         {

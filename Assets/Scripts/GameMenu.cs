@@ -49,7 +49,7 @@ public class GameMenu : MonoBehaviour
         string username = UnityWebRequest.EscapeURL(login.loggedInUsername);
 
         // Construct the URL with the username as a parameter
-        string url = "https://match3backend.000webhostapp.com/updatelevel.php?user_name=" + username;
+        string url = "http://127.0.0.1/match3/updatelevel.php?user_name=" + username;
 
         // Send the GET request to the PHP script
         using (UnityWebRequest request = UnityWebRequest.Get(url))
