@@ -6,17 +6,23 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Firebase.Firestore;
+using Firebase.Extensions;
+using System.Threading.Tasks;
+using Firebase.Auth;
+using Firebase.Database;  // For ContinueWithOnMainThread
 
 public class LevelMenu : MonoBehaviour
 {
     public Button[] Buttons;
-    private RegistrationLoginManager login;
+    public int PlayerLevel;
+    private FirebaseManager _firebase;
 
     private void Awake()
     {
-        login = GameObject.Find("LoginManager").GetComponent<RegistrationLoginManager>();
+        _firebase = GameObject.Find("FirebaseManager").GetComponent<FirebaseManager>();
 
-        gameObject.SetActive(false);    
+        //gameObject.SetActive(false);
 
         // Disable the buttons initially
         for (int i = 0; i < Buttons.Length; i++)
@@ -27,46 +33,49 @@ public class LevelMenu : MonoBehaviour
 
     private void Start()
     {
-        // Fetch player level from the server
+        // Fetch player level from Firestore
         StartCoroutine(GetLevel());
     }
 
     IEnumerator GetLevel()
     {
-        string username = UnityWebRequest.EscapeURL(login.loggedInUsername);
-        Debug.Log(username);
-        string url = "http://127.0.0.1/match3/userlevel.php?user_name=" + username;
-        Debug.Log(url);
+        // Fetch the player level from the database
+        var DBTask = _firebase.Database.Child("users").Child(_firebase.User.UserId).Child("Level").GetValueAsync();
 
-        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        // Wait for the task to complete
+        yield return new WaitUntil(() => DBTask.IsCompleted);
+
+        if (DBTask.Exception != null)
         {
+            Debug.LogError($"Failed to fetch player level: {DBTask.Exception}");
+        }
+        else
+        {
+            DataSnapshot snapshot = DBTask.Result;
 
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success)
+            // Check if the snapshot contains data
+            if (snapshot.Exists)
             {
-                string json = request.downloadHandler.text;
-                Debug.Log(json);
+                PlayerLevel = int.Parse(snapshot.Value.ToString());
 
-                UserDataList userData = JsonUtility.FromJson<UserDataList>("{\"entries\":" + json + "}");
-
-                if (userData.entries.Length > 0)
+                // Enable buttons based on player level
+                for (int i = 0; i < Buttons.Length; i++)
                 {
-                    int unlockedLevel = userData.entries[0].Level;
-
-                    for (int i = 0; i < unlockedLevel; i++)
+                    if (i < PlayerLevel)
                     {
                         Buttons[i].interactable = true;
                     }
+                    else
+                    {
+                        Buttons[i].interactable = false;
+                    }
                 }
-                else
-                {
-                    Debug.Log("There is no entry");
-                }
+
+                gameObject.SetActive(true); // Activate the game object now that buttons are set
             }
             else
             {
-                Debug.LogError("Failed to fetch player level: " + request.error);
+                Debug.LogWarning("Player level data not found.");
             }
         }
     }
@@ -87,3 +96,5 @@ public class LevelMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 }
+
+
