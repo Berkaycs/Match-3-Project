@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3196,6 +3196,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 011d40f3a53503d4ea90ad1e3b20182b, type: 3}
+--- !u!1 &991456023 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6299835569927233960, guid: 011d40f3a53503d4ea90ad1e3b20182b,
+    type: 3}
+  m_PrefabInstance: {fileID: 991456022}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1040819748
 GameObject:
   m_ObjectHideFlags: 0
@@ -4413,7 +4419,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c7292e34aea39f2469073538fab95714, type: 2}
   - {fileID: 11400000, guid: 3a1bc16a66bc03a43b767888abfd03dd, type: 2}
   - {fileID: 11400000, guid: 2290e6cdd4814054ca8c338f49eaebae, type: 2}
-  BackgroundMusic: {fileID: 0}
+  BackgroundMusic: {fileID: 991456023}
   ItemIndex: 0
   Score: 0
 --- !u!4 &1259505389

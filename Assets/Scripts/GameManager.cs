@@ -1,10 +1,7 @@
 using System;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,7 +20,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameMenu _gameMenu;
 
-    [SerializeField] private UnityEngine.UI.Image _icon;
+    private FirebaseManager _firebase;
+
+    [SerializeField] private Image _icon;
 
     [SerializeField] private Item[] _itemList;
 
@@ -37,6 +36,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        _firebase = GameObject.Find("FirebaseManager").GetComponent<FirebaseManager>();
+
         _completePanel.SetActive(false);
         _failedPanel.SetActive(false);
         _buttons.SetActive(true);
@@ -78,8 +79,7 @@ public class GameManager : MonoBehaviour
 
     public void GameManager_OnLevelCompleted(object sender, EventArgs e)
     {
-        StartCoroutine(_gameMenu.UpdateLevel());
-        StartCoroutine(_gameMenu.UpdateScore());
+        _firebase.UpdateInfo();
         _completePanel.SetActive(true);
         BackgroundMusic.SetActive(false);
         _buttons.SetActive(false);

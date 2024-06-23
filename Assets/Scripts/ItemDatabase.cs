@@ -9,7 +9,4 @@ public static class ItemDatabase
     {
         Items = Resources.LoadAll<Item>("Items/");
     }
-
-
-
 }
