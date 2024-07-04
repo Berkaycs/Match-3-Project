@@ -95,3 +95,6 @@ Assets/Plugins/tvOS/Firebase/libFirebaseCppAuth.a
 Assets/Plugins/tvOS/Firebase/libFirebaseCppAuth.a.meta
 Assets/Plugins/tvOS/Firebase/libFirebaseCppDatabase.a
 Assets/Plugins/tvOS/Firebase/libFirebaseCppDatabase.a.meta
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_1_0.bundle
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_1_0.bundle.meta
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_1_0.so

@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
             {
                 _goalAmount = 0;
             }
-            _goalText.text = ": " + _goalAmount.ToString();
+            _goalText.text = _goalAmount.ToString();
             AudioManager.instance.PlayGoalSound();
         }
         
@@ -131,7 +131,6 @@ public class GameManager : MonoBehaviour
             _goalAmount = 0;
             OnLevelCompleted?.Invoke(this, EventArgs.Empty);
             AudioManager.instance.PlayCompletedSound();
-            //Score = 0;
         }
     }
 }
