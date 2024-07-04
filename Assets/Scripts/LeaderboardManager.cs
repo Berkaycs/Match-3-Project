@@ -14,8 +14,6 @@ public class LeaderboardManager : MonoBehaviour
 
     private FirebaseManager _firebase;
 
-    //public FirestoreManager Firestore;
-
     public int ChildWidth = 850;
     public int ChildHeight = 150;
 

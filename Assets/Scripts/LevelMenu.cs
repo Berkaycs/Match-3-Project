@@ -1,16 +1,11 @@
 using Newtonsoft.Json;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Firebase.Firestore;
-using Firebase.Extensions;
 using System.Threading.Tasks;
-using Firebase.Auth;
-using Firebase.Database;  // For ContinueWithOnMainThread
+using Firebase.Database;
 
 public class LevelMenu : MonoBehaviour
 {
@@ -21,8 +16,6 @@ public class LevelMenu : MonoBehaviour
     private void Awake()
     {
         _firebase = GameObject.Find("FirebaseManager").GetComponent<FirebaseManager>();
-
-        //gameObject.SetActive(false);
 
         // Disable the buttons initially
         for (int i = 0; i < Buttons.Length; i++)

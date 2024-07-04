@@ -5,8 +5,6 @@ using Firebase;
 using Firebase.Auth;
 using UnityEngine.SceneManagement;
 using System;
-using Firebase.Extensions;
-using Firebase.Firestore;
 using System.Threading.Tasks;
 using Firebase.Database;
 using System.Collections.Generic;
@@ -126,8 +124,6 @@ public class FirebaseManager : MonoBehaviour
                 StartCoroutine(SetInitialUserValues(username));
                 Debug.Log("Username is now set");
             }
-
-            // CreateUserProfile(_user.UserId, username, email);
         }
         else
         {
@@ -157,7 +153,6 @@ public class FirebaseManager : MonoBehaviour
             User = result.User;
             Debug.Log($"User logged in: {User.Email}");
 
-            //regUserInput.text = User.DisplayName;
             logErrorText.gameObject.SetActive(false);
 
             SceneManager.LoadScene(1);
