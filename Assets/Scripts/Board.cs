@@ -11,8 +11,8 @@ public class Board : MonoBehaviour
 {
     public static Board Instance { get; private set; }
 
-    private ObjectPool pool = null;
-    private ParticleSystem obj;
+    private ObjectPool _pool = null;
+    private ParticleSystem _obj;
 
     public event EventHandler OnGoalFruitPopped;
     public event EventHandler OnTileSwappedMove;
@@ -39,11 +39,11 @@ public class Board : MonoBehaviour
 
     private readonly List<Tile> _selection = new List<Tile>();
 
-    private const float TweenDuration = 0.25f;
+    private const float _tweenDuration = 0.25f;
     public int ValueOfItem;
     public int IndexOfItem;
     public int PoppedCount;
-    public int controlSound = 0;
+    public int ControlSound = 0;
     private void Awake()
     {
         Instance = this;
@@ -51,23 +51,23 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
-        pool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
+        _pool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
 
         OnTileSwappedMove += GameManager.Instance.GameManager_OnTileSwappedMove;
         OnTileSwappedScore += GameManager.Instance.GameManager_OnTileSwappedScore;
         OnGoalFruitPopped += GameManager.Instance.GameManager_OnGoalFruitPopped;
 
         //linQ ile pratik yoldan yazým.
-        Tiles = new Tile[Rows.Max(selector: r=> r.Tiles1.Length),Rows.Length];
+        Tiles = new Tile[Rows.Max(selector: r=> r.Tiles.Length),Rows.Length];
 
         for (int a = 0; a < Height; a++)
         {
 
             for (int b = 0; b < Width; b++)
             {
-                Tile tile = Rows[a].Tiles1[b];
-                tile.x = b;
-                tile.y = a;
+                Tile tile = Rows[a].Tiles[b];
+                tile.X = b;
+                tile.Y = a;
                 tile.Item = ItemDatabase.Items[UnityEngine.Random.Range(0,ItemDatabase.Items.Length-1)];
                 Tiles[b, a] = tile;
             }
@@ -78,7 +78,7 @@ public class Board : MonoBehaviour
 
     public async void Select(Tile tile)
     {
-        AudioManager.instance.PlaySelectSound();
+        AudioManager.Instance.PlaySelectSound();
         var control = 0;
         
         if (!_selection.Contains(tile))
@@ -93,7 +93,7 @@ public class Board : MonoBehaviour
         await Swap(_selection[0], _selection[1]);
 
 
-        if ((_selection[0].x == _selection[1].x-1 && _selection[0].y == _selection[1].y) || (_selection[0].x == _selection[1].x + 1 && _selection[0].y == _selection[1].y) || (_selection[0].y == _selection[1].y + 1 && _selection[0].x == _selection[1].x) || (_selection[0].y == _selection[1].y - 1 && _selection[0].x == _selection[1].x))
+        if ((_selection[0].X == _selection[1].X-1 && _selection[0].Y == _selection[1].Y) || (_selection[0].X == _selection[1].X + 1 && _selection[0].Y == _selection[1].Y) || (_selection[0].Y == _selection[1].Y + 1 && _selection[0].X == _selection[1].X) || (_selection[0].Y == _selection[1].Y - 1 && _selection[0].X == _selection[1].X))
         {
             
             if (CanPopx())
@@ -109,7 +109,7 @@ public class Board : MonoBehaviour
             if (control == 0)
             {
                 await Swap(_selection[0], _selection[1]);
-                AudioManager.instance.PlayNotallowedSound();
+                AudioManager.Instance.PlayNotallowedSound();
             }
             if (control == 1)
             {
@@ -122,7 +122,7 @@ public class Board : MonoBehaviour
         else
         {
             await Swap(_selection[0], _selection[1]);
-            AudioManager.instance.PlayNotallowedSound();
+            AudioManager.Instance.PlayNotallowedSound();
             _selection.Clear();
         }
         
@@ -138,7 +138,7 @@ public class Board : MonoBehaviour
         var icon2Transform = icon2.transform;
 
         var sequence = DOTween.Sequence();
-        sequence.Join(icon1Transform.DOMove(icon2Transform.position, TweenDuration)).Join(icon2Transform.DOMove(icon1Transform.position, TweenDuration));
+        sequence.Join(icon1Transform.DOMove(icon2Transform.position, _tweenDuration)).Join(icon2Transform.DOMove(icon1Transform.position, _tweenDuration));
 
         await sequence.Play().AsyncWaitForCompletion();
 
@@ -154,7 +154,7 @@ public class Board : MonoBehaviour
         tile1.Item = tile2.Item;
         tile2.Item = tile1Item;
 
-        AudioManager.instance.PlaySwapSound();
+        AudioManager.Instance.PlaySwapSound();
 
     }
 
@@ -203,7 +203,7 @@ public class Board : MonoBehaviour
 
                 foreach (var connectedTile in connectedTiles)
                 { 
-                    deflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.zero,TweenDuration));
+                    deflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.zero,_tweenDuration));
                     if (connectedTile.Item.Index != GameManager.Instance.ItemIndex)
                     {
                         Effect(connectedTile, 0);
@@ -215,13 +215,13 @@ public class Board : MonoBehaviour
                 }
                 await deflateSequence.Play().AsyncWaitForCompletion();
 
-                if (controlSound == 0)
+                if (ControlSound == 0)
                 {
-                    AudioManager.instance.PlayPopSound();
+                    AudioManager.Instance.PlayPopSound();
                 }
                 else
                 {
-                    AudioManager.instance.PlayRepopSound();
+                    AudioManager.Instance.PlayRepopSound();
                 }
 
                 OnTileSwappedScore?.Invoke(this, new OnTileSwappedScoreEventArgs
@@ -236,25 +236,25 @@ public class Board : MonoBehaviour
                 foreach(var connectedTile in connectedTiles)
                 {
                     connectedTile.Item = ItemDatabase.Items[UnityEngine.Random.Range(0,ItemDatabase.Items.Length)];
-                    inflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.one,TweenDuration));
+                    inflateSequence.Join(connectedTile.Icon.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f),_tweenDuration));
                 }
                 await inflateSequence.Play().AsyncWaitForCompletion();
 
                 if (CanPopx())
                 {
-                    controlSound++;
+                    ControlSound++;
                     Popx();
                     return;
 
                 }
                 if (CanPopy())
                 {
-                    controlSound++;
+                    ControlSound++;
                     Popy();
                     return;
                 }
                 GameManager.Instance.CheckGoalAmount();
-                controlSound = 0;
+                ControlSound = 0;
             }
         }
     }
@@ -280,7 +280,7 @@ public class Board : MonoBehaviour
 
                 foreach (var connectedTile in connectedTiles)
                 {
-                    deflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.zero, TweenDuration));
+                    deflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.zero, _tweenDuration));
                     if(connectedTile.Item.Index != GameManager.Instance.ItemIndex)
                     {
                         Effect(connectedTile, 0);
@@ -293,13 +293,13 @@ public class Board : MonoBehaviour
                 }
                 await deflateSequence.Play().AsyncWaitForCompletion();
 
-                if (controlSound == 0)
+                if (ControlSound == 0)
                 {
-                    AudioManager.instance.PlayPopSound();
+                    AudioManager.Instance.PlayPopSound();
                 }
                 else
                 {
-                    AudioManager.instance.PlayRepopSound();
+                    AudioManager.Instance.PlayRepopSound();
                 }
 
                 OnTileSwappedScore?.Invoke(this, new OnTileSwappedScoreEventArgs
@@ -314,31 +314,31 @@ public class Board : MonoBehaviour
                 foreach (var connectedTile in connectedTiles)
                 {
                     connectedTile.Item = ItemDatabase.Items[UnityEngine.Random.Range(0, ItemDatabase.Items.Length)];
-                    inflateSequence.Join(connectedTile.Icon.transform.DOScale(Vector3.one, TweenDuration));
+                    inflateSequence.Join(connectedTile.Icon.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), _tweenDuration));
                 }
                 await inflateSequence.Play().AsyncWaitForCompletion();
                 if (CanPopx())
                 {
-                    controlSound++;
+                    ControlSound++;
                     Popx();
                     return;
                 }
                 if (CanPopy())
                 {
-                    controlSound++;
+                    ControlSound++;
                     Popy();
                     return;
                 }
                 GameManager.Instance.CheckGoalAmount();
-                controlSound = 0;
+                ControlSound = 0;
             }
         }
     }
     void Effect(Tile tile,int number)
     {
-        obj = pool.GetObject(number);
-        obj.gameObject.transform.position = tile.Icon.transform.position;
-        obj.Play();
+        _obj = _pool.GetObject(number);
+        _obj.gameObject.transform.position = tile.Icon.transform.position;
+        _obj.Play();
        
     }
 }

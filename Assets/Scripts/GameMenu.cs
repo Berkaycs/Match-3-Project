@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GameMenu : MonoBehaviour
 {
-    private string LevelName;
+    private string _levelName;
     public int CurrentLevel;
 
     public void MainMenu()
@@ -14,14 +14,14 @@ public class GameMenu : MonoBehaviour
     public void UnlockedLevel()
     {
         int nextLevel = CurrentLevel + 1;
-        LevelName = "Level " + nextLevel;
+        _levelName = "Level " + nextLevel;
 
-        SceneManager.LoadScene(LevelName);
+        SceneManager.LoadScene(_levelName);
     }
 
     public void Retry()
     {
-        LevelName = "Level " + CurrentLevel;
-        SceneManager.LoadScene(LevelName);
+        _levelName = "Level " + CurrentLevel;
+        SceneManager.LoadScene(_levelName);
     }
 }

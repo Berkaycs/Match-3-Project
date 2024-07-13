@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public sealed class Tile : MonoBehaviour
 {
-    public int x;
-    public int y;
+    public int X;
+    public int Y;
 
     private Item _item;
     public Item Item
@@ -16,6 +16,7 @@ public sealed class Tile : MonoBehaviour
             if(_item == value) return;
             //seçilen meyveyi tutar
             _item = value;
+   
             Icon.sprite = _item.Sprite;
         }
     }
@@ -25,9 +26,9 @@ public sealed class Tile : MonoBehaviour
     {
         get
         {
-            if (x < Board.Instance.Width-1)
+            if (X < Board.Instance.Width-1)
             {
-                return Board.Instance.Tiles[x + 1, y];
+                return Board.Instance.Tiles[X + 1, Y];
             }
             else
             {
@@ -39,9 +40,9 @@ public sealed class Tile : MonoBehaviour
     {
         get
         {
-            if (x > 0)
+            if (X > 0)
             {
-                return Board.Instance.Tiles[x - 1, y];
+                return Board.Instance.Tiles[X - 1, Y];
             }
             else
             {
@@ -53,9 +54,9 @@ public sealed class Tile : MonoBehaviour
     {
         get
         {
-            if (y > 0)
+            if (Y > 0)
             {
-                return Board.Instance.Tiles[x, y-1];
+                return Board.Instance.Tiles[X, Y-1];
             }
             else
             {
@@ -67,9 +68,9 @@ public sealed class Tile : MonoBehaviour
     {
         get
         {
-            if (y < Board.Instance.Height-1)
+            if (Y < Board.Instance.Height-1)
             {
-                return Board.Instance.Tiles[x, y+1];
+                return Board.Instance.Tiles[X, Y+1];
             }
             else
             {

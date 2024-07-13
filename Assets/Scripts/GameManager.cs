@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         _scoreText.text = Score.ToString();
 
         _goalAmount = UnityEngine.Random.Range(7,14);
-        _goalText.text = ": " + _goalAmount.ToString();
+        _goalText.text = _goalAmount.ToString();
 
         ItemIndex = UnityEngine.Random.Range(0, _itemList.Length);
         _icon.sprite = _itemList[ItemIndex].Sprite;
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         _failedPanel.SetActive(true);
         _buttons.SetActive(false);
         BackgroundMusic.SetActive(false);
-        AudioManager.instance.PlayGameOverSound();
+        AudioManager.Instance.PlayGameOverSound();
     }
 
     public void GameManager_OnTileSwappedMove(object sender, EventArgs e)
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
                 _goalAmount = 0;
             }
             _goalText.text = _goalAmount.ToString();
-            AudioManager.instance.PlayGoalSound();
+            AudioManager.Instance.PlayGoalSound();
         }
         
     }
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
         {
             _goalAmount = 0;
             OnLevelCompleted?.Invoke(this, EventArgs.Empty);
-            AudioManager.instance.PlayCompletedSound();
+            AudioManager.Instance.PlayCompletedSound();
         }
     }
 }

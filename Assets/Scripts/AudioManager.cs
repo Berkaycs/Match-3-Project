@@ -4,52 +4,52 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip select, pop, repop, completed, gameOver, notAllowed, swap, goal;
+    public static AudioManager Instance;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _select, _pop, _repop, _completed, _gameOver, _notAllowed, _swap, _goal;
 
     private void Awake()
     {
-        instance = this;
+        Instance = this;
     }
     public void PlaySelectSound()
     {
-        audioSource.clip = select;
-        audioSource.Play();
+        _audioSource.clip = _select;
+        _audioSource.Play();
     }
     public void PlayPopSound()
     {
-        audioSource.clip = pop;
-        audioSource.Play();
+        _audioSource.clip = _pop;
+        _audioSource.Play();
     }
     public void PlayRepopSound()
     {
-        audioSource.clip = repop;
-        audioSource.Play();
+        _audioSource.clip = _repop;
+        _audioSource.Play();
     }
     public void PlayCompletedSound()
     {
-        audioSource.clip = completed;
-        audioSource.Play();
+        _audioSource.clip = _completed;
+        _audioSource.Play();
     }
     public void PlayGameOverSound()
     {
-        audioSource.clip = gameOver;
-        audioSource.Play();
+        _audioSource.clip = _gameOver;
+        _audioSource.Play();
     }
     public void PlayNotallowedSound()
     {
-        audioSource.clip = notAllowed;
-        audioSource.Play();
+        _audioSource.clip = _notAllowed;
+        _audioSource.Play();
     }
     public void PlaySwapSound()
     {
-        audioSource.clip = swap;
-        audioSource.Play();
+        _audioSource.clip = _swap;
+        _audioSource.Play();
     }
     public void PlayGoalSound()
     {
-        audioSource.clip = goal;
-        audioSource.Play();
+        _audioSource.clip = _goal;
+        _audioSource.Play();
     }
 }
