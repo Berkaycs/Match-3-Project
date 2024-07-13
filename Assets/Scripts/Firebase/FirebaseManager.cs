@@ -11,28 +11,29 @@ using System.Collections.Generic;
 
 public class FirebaseManager : MonoBehaviour
 {
-    public TMP_InputField regMailInput;
-    public TMP_InputField regUserInput;
-    public TMP_InputField regPasswordInput;
-    public TMP_InputField logMailInput;
-    public TMP_InputField logPasswordInput;
-    public TextMeshProUGUI regErrorText;
-    public TextMeshProUGUI logErrorText;
+    public TMP_InputField RegMailInput;
+    public TMP_InputField RegUserInput;
+    public TMP_InputField RegPasswordInput;
+    public TMP_InputField LogMailInput;
+    public TMP_InputField LogPasswordInput;
+    public TextMeshProUGUI RegErrorText;
+    public TextMeshProUGUI LogErrorText;
 
     public GameObject RegPanel;
     public GameObject LogPanel;
 
     public FirebaseUser User;
-    private FirebaseAuth _auth;
     public DatabaseReference Database;
+
+    private FirebaseAuth _auth;
     private DependencyStatus _dependencyStatus;
 
     private void Awake()
     {
         RegPanel.gameObject.SetActive(true);
         LogPanel.gameObject.SetActive(false);
-        regErrorText.gameObject.SetActive(false);
-        logErrorText.gameObject.SetActive(false);       
+        RegErrorText.gameObject.SetActive(false);
+        LogErrorText.gameObject.SetActive(false);       
 
         // Initialize Firebase
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => 
@@ -63,12 +64,12 @@ public class FirebaseManager : MonoBehaviour
 
     public void RegisterUser()
     {
-        StartCoroutine(Register(regMailInput.text ,regUserInput.text, regPasswordInput.text));
+        StartCoroutine(Register(RegMailInput.text ,RegUserInput.text, RegPasswordInput.text));
     }
 
     public void LoginUser()
     {
-        StartCoroutine(Login(logMailInput.text, logPasswordInput.text));
+        StartCoroutine(Login(LogMailInput.text, LogPasswordInput.text));
     }
 
     public void Quit()
@@ -98,7 +99,7 @@ public class FirebaseManager : MonoBehaviour
         if (createUserTask.Exception != null)
         {
             Debug.LogError($"User registration failed: {createUserTask.Exception}");
-            regErrorText.gameObject.SetActive(true);
+            RegErrorText.gameObject.SetActive(true);
             yield break;
         }
 
@@ -144,7 +145,7 @@ public class FirebaseManager : MonoBehaviour
         {
             // Log the error if the task fails
             Debug.LogError($"Login failed: {loginTask.Exception}");
-            logErrorText.gameObject.SetActive(true);
+            LogErrorText.gameObject.SetActive(true);
         }
         else
         {
@@ -153,7 +154,7 @@ public class FirebaseManager : MonoBehaviour
             User = result.User;
             Debug.Log($"User logged in: {User.Email}");
 
-            logErrorText.gameObject.SetActive(false);
+            LogErrorText.gameObject.SetActive(false);
 
             SceneManager.LoadScene(1);
         }

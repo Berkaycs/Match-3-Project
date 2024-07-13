@@ -141,12 +141,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855e1f437b43b7343b464c9d7c3075ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 4156557089805823741}
-  select: {fileID: 8300000, guid: e3e0245ec29df4d5d8034f570418f0ce, type: 3}
-  pop: {fileID: 8300000, guid: 2aa42b757137445eea181c743c2cc9e4, type: 3}
-  repop: {fileID: 8300000, guid: 0cd3298f0c287466f8b9f5139e496f08, type: 3}
-  completed: {fileID: 8300000, guid: 49caa62bcbd844634880cf7f42639101, type: 3}
-  gameOver: {fileID: 8300000, guid: cf9263392cd83634fbe463db411d01ce, type: 3}
-  notAllowed: {fileID: 8300000, guid: edc5759e2c5b64b52a0114326f682a10, type: 3}
-  swap: {fileID: 8300000, guid: 9abb3a81b78d7cb4e8e1e42cad3709ef, type: 3}
-  goal: {fileID: 8300000, guid: 048357143f0994413af48fbaf75d7890, type: 3}
+  _audioSource: {fileID: 4156557089805823741}
+  _select: {fileID: 8300000, guid: e3e0245ec29df4d5d8034f570418f0ce, type: 3}
+  _pop: {fileID: 8300000, guid: 2aa42b757137445eea181c743c2cc9e4, type: 3}
+  _repop: {fileID: 8300000, guid: 5e275b86f27ae48a08d0d5ac8a48e79d, type: 3}
+  _completed: {fileID: 8300000, guid: 49caa62bcbd844634880cf7f42639101, type: 3}
+  _gameOver: {fileID: 8300000, guid: cf9263392cd83634fbe463db411d01ce, type: 3}
+  _notAllowed: {fileID: 8300000, guid: edc5759e2c5b64b52a0114326f682a10, type: 3}
+  _swap: {fileID: 8300000, guid: 9abb3a81b78d7cb4e8e1e42cad3709ef, type: 3}
+  _goal: {fileID: 8300000, guid: 048357143f0994413af48fbaf75d7890, type: 3}

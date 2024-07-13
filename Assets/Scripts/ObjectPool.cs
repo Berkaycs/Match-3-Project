@@ -9,7 +9,7 @@ public class ObjectPool : MonoBehaviour
     [Serializable]
     public struct Pool
     {
-        public Queue<ParticleSystem> pool;
+        public Queue<ParticleSystem> ParticlePool;
         public ParticleSystem ObjectPrefab;
         public int PoolSize;
     }
@@ -21,13 +21,13 @@ public class ObjectPool : MonoBehaviour
 
         for (int j = 0; j < Pools.Length; j++)
         {
-            Pools[j].pool = new Queue<ParticleSystem>();
+            Pools[j].ParticlePool = new Queue<ParticleSystem>();
             for (int i = 0; i < Pools[j].PoolSize; i++)
             {
                 ParticleSystem obj = Instantiate(Pools[j].ObjectPrefab);
                 obj.gameObject.SetActive(false);
 
-                Pools[j].pool.Enqueue(obj);
+                Pools[j].ParticlePool.Enqueue(obj);
             }
         }
         
@@ -40,9 +40,9 @@ public class ObjectPool : MonoBehaviour
             return null;
         }
 
-        ParticleSystem obj = Pools[objectType].pool.Dequeue();
+        ParticleSystem obj = Pools[objectType].ParticlePool.Dequeue();
         obj.gameObject.SetActive(true);
-        Pools[objectType].pool.Enqueue(obj);
+        Pools[objectType].ParticlePool.Enqueue(obj);
         return obj;
 
     }
