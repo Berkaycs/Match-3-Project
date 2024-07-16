@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 2772001120228086335}
   - component: {fileID: 3942221417805200102}
   - component: {fileID: 5020049575078887709}
-  - component: {fileID: -8492627548701406427}
+  - component: {fileID: 3855690430824776131}
   m_Layer: 5
   m_Name: Tile
   m_TagString: Untagged
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-8492627548701406427
+--- !u!114 &3855690430824776131
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dfaadb9a70c73e469f3c9a0e6c93d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 0
-  y: 0
+  X: 0
+  Y: 0
   Icon: {fileID: 8505614131376441357}
   Button: {fileID: 5020049575078887709}
