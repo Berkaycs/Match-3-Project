@@ -7,6 +7,9 @@ public sealed class Tile : MonoBehaviour
     public int X;
     public int Y;
 
+    public Image Icon;
+    public Button Button;
+
     private Item _item;
     public Item Item
     {
@@ -20,8 +23,6 @@ public sealed class Tile : MonoBehaviour
             Icon.sprite = _item.Sprite;
         }
     }
-    public Image Icon;
-    public Button Button;
     public Tile Right
     {
         get
